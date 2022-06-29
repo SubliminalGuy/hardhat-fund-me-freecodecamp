@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../hardhat-simple-storage-fcc"
+		}
+	],
+	"settings": {}
+}
