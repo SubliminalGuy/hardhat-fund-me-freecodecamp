@@ -1,7 +1,8 @@
 const networkConfig = {
     4: {
         name: "rinkeby",
-        priceFeed: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e",
+        ethUsdPriceFeed: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e",
+        eurUsdPriceFeed: "0x0c15Ab9A0DB086e062194c273CC79f41597Bbf13",
     },
 }
 

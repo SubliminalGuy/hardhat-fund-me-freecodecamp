@@ -22,7 +22,7 @@ const { developmentChains } = require("../../helper-hardhat-config")
 
           describe("constructor", function () {
               it("sets the aggregator addresses correctly", async function () {
-                  const response = await fundMe.getPriceFeed()
+                  const response = await fundMe.getEthUsdPriceFeed()
                   assert.equal(response, MockV3Aggregator.address)
               })
           })
@@ -33,6 +33,14 @@ const { developmentChains } = require("../../helper-hardhat-config")
                       "Didn't send enough!"
                   )
               })
+
+              it("test getEurPrice", async function () {
+                  await fundMe.setEuroPrice(sendValue)
+                  let euroPriceReceived = await fundMe.getEuroPrice()
+                  console.log(euroPriceReceived.toString())
+                  assert.equal(euroPriceReceived.toString(), "10.41")
+              })
+
               it("Updates the amount funded data structure", async function () {
                   await fundMe.fund({ value: sendValue })
                   const response = await fundMe.getAddressToAmountFunded(

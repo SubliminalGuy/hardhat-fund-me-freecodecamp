@@ -21,8 +21,12 @@ contract FundMe {
     address[] private s_funders;
     address private immutable i_owner;
     uint256 public constant MINIMUM_USD = 1 * 1e18; //
+    uint256 public EUR = 10;
+    uint256 private s_amountInDollar;
+    uint256 private s_amountInEuro;
 
-    AggregatorV3Interface private s_priceFeed;
+    AggregatorV3Interface private s_ethUsdPriceFeed;
+    AggregatorV3Interface private s_eurUsdPriceFeed;
 
     modifier onlyOwner() {
         //require(msg.sender == i_owner, "Sender is not owner!");
@@ -32,19 +36,25 @@ contract FundMe {
         _;
     }
 
-    constructor(address priceFeedAddress) {
+    constructor(address ethUsdPriceFeedAddress, address eurUsdPriceFeedAddress)
+    {
         i_owner = msg.sender;
-        s_priceFeed = AggregatorV3Interface(priceFeedAddress);
+        s_ethUsdPriceFeed = AggregatorV3Interface(ethUsdPriceFeedAddress);
+        s_eurUsdPriceFeed = AggregatorV3Interface(eurUsdPriceFeedAddress);
     }
 
     function fund() public payable {
         // require value to be at least 1ETH
         require(
-            msg.value.getConversionRate(s_priceFeed) > MINIMUM_USD,
+            msg.value.getConversionRate(s_ethUsdPriceFeed) > MINIMUM_USD,
             "Didn't send enough!"
         );
         s_funders.push(msg.sender);
         s_addressToAmountFunded[msg.sender] = msg.value;
+    }
+
+    function getEuroPrice() public view returns (uint256) {
+        return EUR;
     }
 
     function withdraw() public onlyOwner {
@@ -112,7 +122,11 @@ contract FundMe {
         return s_addressToAmountFunded[funder];
     }
 
-    function getPriceFeed() public view returns (AggregatorV3Interface) {
-        return s_priceFeed;
+    function getEthUsdPriceFeed() public view returns (AggregatorV3Interface) {
+        return s_ethUsdPriceFeed;
+    }
+
+    function getEurUsdPriceFeed() public view returns (AggregatorV3Interface) {
+        return s_eurUsdPriceFeed;
     }
 }

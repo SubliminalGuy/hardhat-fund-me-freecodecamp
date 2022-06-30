@@ -18,10 +18,12 @@ module.exports = async ({ getNamedAccount, deployments }) => {
     if (developmentChains.includes(network.name)) {
         const ethUsdAggregator = await deployments.get("MockV3Aggregator")
         ethUsdPriceFeedAddress = ethUsdAggregator.address
+        eurUsdPriceFeedAddress = ethUsdAggregator.address
     } else {
-        ethUsdPriceFeedAddress = networkConfig[chainId]["priceFeed"]
+        ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
+        eurUsdPriceFeedAddress = networkConfig[chainId]["eurUsdPriceFeed"]
     }
-    const args = [ethUsdPriceFeedAddress]
+    const args = [ethUsdPriceFeedAddress, eurUsdPriceFeedAddress]
     const fundMe = await deploy("FundMe", {
         from: deployer,
         args: args, // put price feed address

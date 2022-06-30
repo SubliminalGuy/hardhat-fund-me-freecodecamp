@@ -13,6 +13,13 @@ developmentChains.includes(network.name)
               fundMe = await ethers.getContract("FundMe", deployer)
           })
 
+          it("test getEurPrice", async function () {
+              //await fundMe.setEuroPrice()
+              let euroPriceReceived = await fundMe.getEuroPrice()
+              console.log(euroPriceReceived.toString())
+              assert.equal(euroPriceReceived.toString(), "10")
+          })
+
           it("allows people to fund and withdraw", async function () {
               await fundMe.fund({ value: sendValue })
               await fundMe.withdraw()
